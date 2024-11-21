@@ -51,8 +51,13 @@ int main() {
     int row_minus_one = row - 1;  //used for the zero-based matrix
     int row_counter = 0; //used to navigate through the rows when a column is decided. Is at zero due to the zero-based matrix
     
-    
-    std::cout << "Enter a column number \n";
+     if (swap_counter % 2 == 0){  //since there is only two players, we can use % to alternate between player 1 and player 2
+        token = Token_One;         //If it's an even number, it's player 1's turn
+      } else {                     //
+        token = Token_Two;         //If odd, it's player 2's turn. 
+      }
+
+    std::cout << "Player " << token << " Enter a column number \n";
     std::cin >> column_number;
       while(column_number > column || column_number < 0){  //ensure that the player can't pick a column that doesn't exist. Forces them to pick a column;
         std::cout << "Invalid Number. Please enter a valid column number \n";
@@ -60,12 +65,6 @@ int main() {
       }
       
       system("clear"); //clears the terminal to display key info (board, text, etc.) Will need to use system("CLS") for Windows.
-
-      if (swap_counter % 2 == 0){  //since there is only two players, we can use % to alternate between player 1 and player 2
-        token = Token_One;         //If it's an even number, it's player 1's turn
-      } else {                     //
-        token = Token_Two;         //If odd, it's player 2's turn. 
-      }
       
       if(board[0][column_number - 1] == Token_One || board[0][column_number - 1] == Token_Two) { //logic to make sure the player the token can be placed in a valid spot
 
@@ -106,7 +105,7 @@ int main() {
 
   //Win's will be annoucned after the board prints out the final time, so the players can see the board once the game is over.
   
-  //Vertical win check. Since the last token placed on top is required for a vertical win, we check the last token placed, the bottom three rows in the same column to check if there is a vertical win.
+  //Vertical win check. Since the last token placed on top is required for a vertical win, we check the last token placed and the bottom three rows in the same column to check if there is a vertical win.
 
     if(board[row_counter][column_number - 1] == token && board[row_counter + 1][column_number - 1] == token && board[row_counter + 2][column_number - 1] == token && board[row_counter + 3][column_number - 1] == token) {
         if(token == Token_One){
@@ -117,9 +116,12 @@ int main() {
         return 0; //No main menu yet, so we will have the program exit when a win is detected;
     }
 
-    //Horizontal win condition. Iterate throught the entire row and check if there is 4 in a row. At i, we check the next three tokens, and if they are the same, it's a horizontal victory.
+    //Horizontal win condition. Iterate through a row and check if there is 4 in a row. At i, we check the next three tokens, and if they are the same, it's a horizontal victory.
     //The reason i starts at column_number - 3 and ends at column_number + 3 is to not waste time iterating the entire row. we only need to check roughly where the last token was placed,
-    //so we use the player's column_number input and check the rows a few spaces above or behind from where the token was placed.
+    //so we use the player's column_number input and check the rows a few spaces in front and behind from where the token was placed.
+    
+    
+    //essentially, we pick a column number a few spaces behind the last place token, and iterate a few spaces ahead of it's last location to check for a four in a row
 
     for(int i = column_number - 4; i < column_number + 4; ++i){
       if(board[row_counter][i] == token && board[row_counter][i + 1] == token && board[row_counter][i + 2] == token && board[row_counter][i + 3] == token){
@@ -131,6 +133,78 @@ int main() {
         return 0; //No main menu yet, so we will have the program exit when a win is detected;
       }
     }
+
+  // Diagonal win condition. Top left to bottom right. We check the next three tokens in the row and the next three rows to see if there is a diagonal win.
+    for(int i = 0; i < column - 3; ++i)
+    {
+      for(int j = 0; j < row - 3; ++j)
+      {
+        if (board[j][i] == token && 
+        board[j + 1][i + 1] == token && 
+        board[j + 2][i + 2] == token && 
+        board[j + 3][i + 3] == token)
+        {
+          if (token == Token_One)
+          {
+            std::cout << "Player 1 wins through a diagonal victory\n\n";
+          }
+          else
+          {
+            std::cout << "Player 2 wins though a diagonal victory\n\n";
+          }
+          return 0; 
+        }
+      }
+    }
+    
+    /* -  -  -  -  -  -  - 
+       -  -  -  X  -  -  - 
+       -  -  X  O  -  -  - 
+       -  X  O  O  -  -  - 
+       X  O  O  X  X  -  - 
+       1  2  3  4  5  6  7
+       Player 1 wins through a diagonal victory
+    */
+
+    // Diagonal win condition. bottom left to top right. We check the next three tokens in the row and the previous three rows to see if there is a diagonal win.
+
+    for(int i = 0; i < column - 3; ++i)
+    {
+      for(int j = 3; j < row; ++j)
+      {
+        if (board[j][i] == token && 
+        board[j - 1][i + 1] == token && 
+        board[j - 2][i + 2] == token && 
+        board[j - 3][i + 3] == token)
+        {
+          if (token == Token_One)
+          {
+            std::cout << "Player 1 wins through a diagonal victory\n\n";
+          }
+          else
+          {
+            std::cout << "Player 2 wins though a diagonal victory\n\n";
+          }
+          return 0;
+        }
+      }
+    }
+
+    /*
+     -  -  -  -  -  -  - 
+     O  -  -  -  -  -  - 
+     X  O  -  -  -  -  - 
+     O  X  O  -  -  -  - 
+     X  O  X  O  -  X  X 
+     1  2  3  4  5  6  7
+     Player 2 wins though a diagonal victory
+    */
+
+
+
+
+
+
   swap_counter++;
   std::cout << "There are " << (row * column) - swap_counter << " tokens left\n";
   }
