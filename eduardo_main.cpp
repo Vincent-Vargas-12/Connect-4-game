@@ -5,20 +5,28 @@
 //#include <cstdlib> //used for clearing the terminal
 
 
-//global objects for player 1 & 2 
-// and game Board
+
+int main() {
+//Objects for Player class and Board class  
 Player player1; 
 Player player2; 
 Board connect_board;
-
-int main() {
-  player1.name = "player1";
-  player2.name = "player2";
-
+  //Defualt names
+  player1.name = "Player 1";
+  player2.name = "Player 2";
+  
+  player1.get_name();
+  player2.get_name();
+  while(player2.name == player1.name){
+    std::cout << "\nError: Same name as player 1\n";
+    player2.name = "Player 2";
+    player2.get_name();
+  }
   connect_board.column = 7;
   connect_board.row = 6;  
   
     //Self explanatory variables. decidedes how many rows and columns the board will have. 
+    
     //allocate space for 2D array
     connect_board.allocate_and_fill();
     
@@ -26,19 +34,13 @@ int main() {
     //determine ties in the future
     int column_number; //variable player uses to decide which column to pick
     std::string token;  //string that determines which token will be used
-
+    
     //ask for player input for tokens here instead
-    std::cout << "Player (player1.name) enter game piece: ";
-    std::cin >> player1.game_piece;
-    while(player1.game_piece.length() > 1){
-      std::cout << "Invalid game piece. Please enter valid game piece: ";
-      std::cin >> player1.game_piece;
-    }
-    std::cout << "Player (player2.name) enter game piece: ";
-    std::cin >> player2.game_piece;
-    while(player2.game_piece.length() > 1 || (player2.game_piece == player1.game_piece)){
-      std::cout << "Invalid game piece Or same game piece as player 1. Please enter valid game piece: ";
-      std::cin >> player2.game_piece;
+    player1.get_game_peice();
+    player2.get_game_peice();
+    while(player2.game_piece == player1.game_piece){
+      std::cout << "\nERROR: Same game piece as player 1\n";
+      player2.get_game_peice();
     }
 
     connect_board.print_board();
@@ -50,10 +52,10 @@ int main() {
       int row_counter = 0; //used to naviate through the rows
       std::cout << "Enter a valid column number \n";
       std::cin >> column_number;
-        while(column_number > connect_board.column || column_number < 1 || true == std::cin.fail()){  //ensure that the player can't pick a column that doesn't exist. forces them to pick a column;
+        while(column_number > connect_board.column || column_number < 1 || std::cin.fail()){  //ensure that the player can't pick a column that doesn't exist. forces them to pick a column;
           std::cin.clear();
           std::cin.ignore(256,'\n');
-          std::cout << "Invalid Number. Please enter a valid column number \n";
+          std::cout << "Invalid Input. Please enter a valid column number \n";
           std::cin >> column_number;
         }
         
@@ -87,12 +89,12 @@ int main() {
     
     
     connect_board.print_board();
-    
+
   if(true == connect_board.check_win(player1, player2)){
     std::cout << "Win detected\n";
     connect_board.deallocate();
     return 0;
-  }         //board.check_win
+  }         
   if(true == connect_board.check_draw()){
     connect_board.deallocate();
     std::cout << "Draw detected\n";
