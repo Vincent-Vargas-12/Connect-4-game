@@ -10,20 +10,32 @@ class Player{
     int wins = 0;
     
     void print_won(){
-        std::cout << "Player: " << name << " won!" << std::endl;
+        std::cout << "Player: " << name << " won!\n";
     }
     void print_wins(){
-        std::cout << "Player: " << name << " has " << wins << " wins" << std::endl;
+        std::cout << "Player: " << name << " has " << wins << " wins\n";
     }
+
+    void get_name(){
+        std::cout << name << " enter name: ";
+        std::cin >> name;
+        while(name.length() > 20){
+            std::cout << "\nInvalid name: Please enter name with 20 characters or less: ";
+            std::cin >> name;
+        }
+    }
+   
+    void get_game_peice(){
+    std::cout << "Player **" << name << "** enter game piece: ";
+    std::cin >> game_piece;
+    while(game_piece.length() > 1){
+      std::cout << "\nInvalid game piece: **" << name << "** Please enter 1 keyboard character for game piece: ";
+      std::cin >> game_piece;
+    }
+    }
+
 };
 
-/*
-methods can be
----printing_board---
----check_win---
----check_draw---
-??
-*/
 class Board{
     public:
     std::string **board;
@@ -194,16 +206,29 @@ class Board{
 
 /*
 methods can be 
----rematch---
+---new_match---
 clears 
 1 player names
 2 tokens
-3 board
 4 wins
----new match---
-clears board
+---rematch---
 lets winner go first 
 
 class gamestate{
+
+    void new_match(Player& player1, Player& player2){
+        player1.name = "Player 1";
+        player2.name = "Player 2";
+
+        player1.game_piece = "";
+        player2.game_piece = "";
+
+        player1.wins = 0;
+        player2.wins = 0;
+    }
+
+
+
+
 };
 */
