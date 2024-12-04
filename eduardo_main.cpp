@@ -33,6 +33,7 @@ Board connect_board;
     int swap_counter = 0; //counter that counts how many tokens have been places. currently used to end the game, but will 
     //determine ties in the future
     int column_number; //variable player uses to decide which column to pick
+    std::string string_column_number;
     std::string token;  //string that determines which token will be used
     
     //ask for player input for tokens here instead
@@ -50,15 +51,31 @@ Board connect_board;
     while (swap_counter != connect_board.row * connect_board.column) { //when swap counter is equal to the number of rows and columns, the game is over since there are no more tokens at play
       int row_minus_one = connect_board.row - 1;  //used for the zero-based arrya
       int row_counter = 0; //used to naviate through the rows
-      std::cout << "Enter a valid column number \n";
-      std::cin >> column_number;
-        while(column_number > connect_board.column || column_number < 1 || std::cin.fail()){  //ensure that the player can't pick a column that doesn't exist. forces them to pick a column;
-          std::cin.clear();
-          std::cin.ignore(256,'\n');
-          std::cout << "Invalid Input. Please enter a valid column number \n";
-          std::cin >> column_number;
+      while(true){
+        std::cout << "Enter a valid column number \n";
+        std::cin >> string_column_number;
+        if(string_column_number == "quit" or string_column_number == "Quit"){
+          std::cout << "say which player quit give other player point\n";
+          return 0;
         }
-        
+        bool invalid = false;
+        for(char c : string_column_number){
+          if(false == isdigit(c)){
+            std::cout << "Invalid Input. Please "; // next iteration of while loop finishes sentence
+            invalid = true;
+            break;
+          }
+        }
+        if(invalid){
+          continue;
+        }
+          column_number = stoi(string_column_number);
+          if(column_number > connect_board.column || column_number < 1){  //ensure that the player can't pick a column that doesn't exist. forces them to pick a column;
+            std::cout << "Invalid number. Please "; // next iteration of while loop finishes sentence
+            continue;
+          }
+        break;
+      }
         //system("cls"); //clears the terminal to display key info (board, text, etc.)
 
         if (swap_counter % 2 == 0){  //since there is only two players,
@@ -96,10 +113,12 @@ Board connect_board;
     return 0;
   }         
   if(true == connect_board.check_draw()){
-    connect_board.deallocate();
     std::cout << "Draw detected\n";
+    connect_board.deallocate();
     return 0;
   }
+  //after game ends either from a win or draw
+  //prompt users for rematch, new mathch or to end program
 
   swap_counter++;
   std::cout << "There are " << (connect_board.row * connect_board.column) - swap_counter << " tokens left\n";
