@@ -214,7 +214,8 @@ clears
 ---rematch---
 lets winner go first 
 
-class gamestate{
+class state{
+    void end 
 
     void new_match(Player& player1, Player& player2){
         player1.name = "Player 1";
