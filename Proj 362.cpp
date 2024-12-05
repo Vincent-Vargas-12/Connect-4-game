@@ -3,8 +3,8 @@
 #include <cstdlib>  // used for clearing the terminal
 
 int main() {
-    system("clear");
-    std::cout << "Weclome to connect 4 \n\n";
+    system("clear"); //use 'cls' for windows, clear for mac and linux;
+    std::cout << "Welcome to Connect 4 \n\n";
     
     int column = 7;
     int row = 6;
