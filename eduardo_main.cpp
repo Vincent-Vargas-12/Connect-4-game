@@ -3,24 +3,20 @@
 #include <vector> //container for set pieces
 #include "connect4.hpp"
 //#include <cstdlib> //used for clearing the terminal
-
-
-
-int main() {
-//Objects for Player class and Board class  
 Player player1; 
 Player player2; 
 Board connect_board;
-  //Defualt names
-  player1.name = "Player 1";
-  player2.name = "Player 2";
-  
+State game_state;
+
+void connect_4(int option){
+  if(2 == option){
   player1.get_name();
   player2.get_name();
   while(player2.name == player1.name){
     std::cout << "\nError: Same name as player 1\n";
     player2.name = "Player 2";
     player2.get_name();
+  }
   }
   connect_board.column = 7;
   connect_board.row = 6;  
@@ -35,13 +31,15 @@ Board connect_board;
     int column_number; //variable player uses to decide which column to pick
     std::string string_column_number;
     std::string token;  //string that determines which token will be used
-    
+    bool quit = false;
     //ask for player input for tokens here instead
+    if(2 == option){
     player1.get_game_peice();
     player2.get_game_peice();
     while(player2.game_piece == player1.game_piece){
       std::cout << "\nERROR: Same game piece as player 1\n";
       player2.get_game_peice();
+    }
     }
 
     connect_board.print_board();
@@ -56,7 +54,8 @@ Board connect_board;
         std::cin >> string_column_number;
         if(string_column_number == "quit" or string_column_number == "Quit"){
           std::cout << "say which player quit give other player point\n";
-          return 0;
+          quit = true;
+          break;
         }
         bool invalid = false;
         for(char c : string_column_number){
@@ -77,7 +76,9 @@ Board connect_board;
         break;
       }
         //system("cls"); //clears the terminal to display key info (board, text, etc.)
-
+        if(true == quit){
+          break;
+        }
         if (swap_counter % 2 == 0){  //since there is only two players,
           token = player1.game_piece;         //we can use % to alternate between
         } else {                     //player 1 and player 2 tokens
@@ -106,24 +107,60 @@ Board connect_board;
     
     
     connect_board.print_board();
-
+  if(true == quit){
+    std::cout << "Player quit\n";
+    return;
+  }
   if(true == connect_board.check_win(player1, player2)){
     std::cout << "Win detected\n";
     connect_board.deallocate();
-    return 0;
+    return;
   }         
   if(true == connect_board.check_draw()){
     std::cout << "Draw detected\n";
     connect_board.deallocate();
-    return 0;
+    return;
   }
-  //after game ends either from a win or draw
-  //prompt users for rematch, new mathch or to end program
 
   swap_counter++;
   std::cout << "There are " << (connect_board.row * connect_board.column) - swap_counter << " tokens left\n";
   }
+}
 
+int main() {
+//Objects for Player class and Board class  
+  int option;
+  //Defualt names
+  player1.name = "Player 1";
+  player2.name = "Player 2";
+  
+  connect_4(2);
+  
+  while(true){
+  std::cout << "Type 1 for Rematch, Type 2 for New Match, Type 3 to End Game: ";
+  std::cin >> option;
+  while(option < 1 || option > 3){
+    std::cout << "Invalid Input: Type 1 for Rematch, Type 2 for New Match, Type 3 to End Game: ";
+    std::cin >> option;
+  }
+  if(1 == option){
+    //do things for Rematch
+    //like let other person go first, should be it
+    std::cout << "Rematch!\n";
+    connect_4(1);
+  }
+  else if(2 == option){
+    //do things for New match
+    std::cout << "New Match!\n";
+    game_state.new_match(player1, player2);
+    connect_4(2);
+  }
+  else if(3 == option){
+    std::cout << "End Game!\n";
+    return 0;
+  }
+  }
   return 0;
 }
+
 
