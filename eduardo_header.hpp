@@ -213,10 +213,9 @@ clears
 4 wins
 ---rematch---
 lets winner go first 
-
-class state{
-    void end 
-
+*/
+class State{
+    public:
     void new_match(Player& player1, Player& player2){
         player1.name = "Player 1";
         player2.name = "Player 2";
@@ -232,4 +231,3 @@ class state{
 
 
 };
-*/
