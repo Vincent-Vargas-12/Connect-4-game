@@ -3,6 +3,7 @@
 #include <vector> //container for set pieces
 #include "connect4.hpp"
 //#include <cstdlib> //used for clearing the terminal
+
 Player player1; 
 Player player2; 
 Board connect_board;
@@ -139,7 +140,9 @@ int main() {
   while(true){
   std::cout << "Type 1 for Rematch, Type 2 for New Match, Type 3 to End Game: ";
   std::cin >> option;
-  while(option < 1 || option > 3){
+  while(option < 1 || option > 3 || std::cin.fail()){
+    std::cin.clear();
+    std::cin.ignore(256,'\n');
     std::cout << "Invalid Input: Type 1 for Rematch, Type 2 for New Match, Type 3 to End Game: ";
     std::cin >> option;
   }
