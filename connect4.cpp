@@ -208,6 +208,7 @@ int main() {
   }
   else if(4 == option){
     std::cout << "Quitting Connect 4. Thanks for Playing!\n";
+    connect_board.deallocate();
     return 0;
   }
   }
