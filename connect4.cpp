@@ -51,10 +51,20 @@ void connect_4(int option){
       int row_minus_one = connect_board.row - 1;  //used for the zero-based arrya
       int row_counter = 0; //used to naviate through the rows
       while(true){
-        std::cout << "Enter a valid column number \n";
+        if(swap_counter % 2 == 0){
+            std::cout << player1.name;
+        } else {
+            std::cout << player2.name;
+        }
+        std::cout << "'s turn.\nEnter a valid column number, or type ""quit"" to resign \n";
         std::cin >> string_column_number;
         if(string_column_number == "quit" or string_column_number == "Quit"){
-          std::cout << "say which player quit give other player point\n";
+          if(swap_counter % 2 == 0){
+            std::cout << player1.name;
+          } else {
+            std::cout << player2.name;
+          }
+          std::cout << " resigned\n";
           quit = true;
           break;
         }
@@ -128,20 +138,50 @@ void connect_4(int option){
   }
 }
 
+int central_menu(int cursor){
+    system("clear");  //system("cls") for windows users;
+    int selection;
+  std::cout << "XOXOXOXOXOXOXOOXOXO\n";
+  std::cout << "O                 X\n";
+  std::cout << "X     Connect 4   O\n";
+  std::cout << "O                 X\n";
+  std::cout << "XOXOXOXOXOXOXOOXOXO\n\n\n";
+    std::cout << "Welcome to connect 4. Type 1 to start a game, or type 2 to quit the program \n";
+    std::cin >> selection;
+    while(selection > 2 || selection < 1){
+        std::cout << "please type either 1 or 2 \n";
+        std::cin >> selection;
+    }
+    if(selection == 1){
+        cursor = 1;
+        return cursor = 1;
+    }
+    cursor = 2;
+    return cursor = 2;
+}
+
+
 int main() {
 //Objects for Player class and Board class  
   int option;
+  int cursor;
   //Defualt names
+
   player1.name = "Player 1";
   player2.name = "Player 2";
-  
+  cursor = central_menu(cursor);
+
+  if(cursor == 2){ 
+    std::cout << "Qutting Connect 4\n";
+    return 0;
+  }
   connect_4(2);
   
   while(true){
-  std::cout << "Type 1 for Rematch, Type 2 for New Match, Type 3 to End Game: ";
+  std::cout << "Type 1 for Rematch, Type 2 for New Match, Type 3 to go the main menu, Type 4 to End Program: ";
   std::cin >> option;
-  while(option < 1 || option > 3){
-    std::cout << "Invalid Input: Type 1 for Rematch, Type 2 for New Match, Type 3 to End Game: ";
+  while(option < 1 || option > 4){
+    std::cout << "Invalid Input: Type 1 for Rematch, Type 2 for New Match, Type 3 to go to the main menu, or Type 4 to End Program: ";
     std::cin >> option;
   }
   if(1 == option){
@@ -157,7 +197,16 @@ int main() {
     connect_4(2);
   }
   else if(3 == option){
-    std::cout << "End Game!\n";
+    central_menu(cursor);
+    if(cursor == 1){
+        game_state.new_match(player1, player2);
+        connect_4(2);
+    } else {
+        return 0;
+    }
+  }
+  else if(4 == option){
+    std::cout << "Quitting Connect 4. Thanks for Playing!\n";
     return 0;
   }
   }

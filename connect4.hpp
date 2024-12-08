@@ -111,14 +111,11 @@ class Board{
             }
             }
         }
-        //check comulmns
-        
-        if(matches != 3){
-            matches = 0;
+        //check columns
+
+        if(winning_token.empty()){
             for(int i = 0; i < column; i++){
-            if(3 == matches){
-                break;
-            }
+            matches = 0;
             for(int j = row - 1; j > 0; j--){
                 if(board[j][i] == board[j-1][i] && board[j][i] != "-"){
                 matches += 1;
@@ -131,10 +128,13 @@ class Board{
                 matches = 0;
                 }
             }
+            if(3 == matches){
+                break;
+            }
             }
         }
 
-        //check diagnol
+        //check diagonals
         // Diagonal win condition. Top left to bottom right. We check the next three tokens in the row and the next three rows to see if there is a diagonal win.
             if(matches != 3){
             matches = 0;
