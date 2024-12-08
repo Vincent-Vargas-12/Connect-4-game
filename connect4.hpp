@@ -25,7 +25,7 @@ class Player{
         }
     }
    
-    void get_game_peice(){
+    void get_game_piece(){
     std::cout << "Player **" << name << "** enter game piece: ";
     std::cin >> game_piece;
     while(game_piece.length() > 1){

@@ -35,17 +35,16 @@ void connect_4(int option){
     bool quit = false;
     //ask for player input for tokens here instead
     if(2 == option){
-    player1.get_game_peice();
-    player2.get_game_peice();
+    player1.get_game_piece();
+    player2.get_game_piece();
     while(player2.game_piece == player1.game_piece){
       std::cout << "\nERROR: Same game piece as player 1\n";
-      player2.get_game_peice();
+      player2.get_game_piece();
     }
     }
-
+   
+    system ("clear");
     connect_board.print_board();
-
-
 
     while (swap_counter != connect_board.row * connect_board.column) { //when swap counter is equal to the number of rows and columns, the game is over since there are no more tokens at play
       int row_minus_one = connect_board.row - 1;  //used for the zero-based arrya
@@ -56,15 +55,18 @@ void connect_4(int option){
         } else {
             std::cout << player2.name;
         }
-        std::cout << "'s turn.\nEnter a valid column number, or type ""quit"" to resign \n";
+        std::cout << "'s turn.\nEnter a valid column number, or type 'resign' to resign \n";
         std::cin >> string_column_number;
-        if(string_column_number == "quit" or string_column_number == "Quit"){
+        if(string_column_number == "resign" or string_column_number == "Resign"){
           if(swap_counter % 2 == 0){
-            std::cout << player1.name;
+            std::cout << player1.name << " resigned\n";
+            player2.wins += 1;
+            player2.print_wins();
           } else {
-            std::cout << player2.name;
+            std::cout << player2.name << " resigned\n";
+            player1.wins += 1;
+            player1.print_wins();
           }
-          std::cout << " resigned\n";
           quit = true;
           break;
         }
@@ -97,7 +99,6 @@ void connect_4(int option){
         }
         
         if(connect_board.board[0][column_number - 1] == player1.game_piece || connect_board.board[0][column_number - 1] == player2.game_piece) { //logic to make sure the player the token can be placed in a valid spot
-          std::cout << "Column " << column_number << " is full. Please Select a different column \n"; //ensures player can't replace top value
           swap_counter--;
         } 
         else {
@@ -119,7 +120,7 @@ void connect_4(int option){
     system ("clear");  //For Mac/Linux users, keep this as is. For windows, use " System ("cls") " in order for the terminal to properly clear
     connect_board.print_board();
   if(true == quit){
-    std::cout << "Player quit\n";
+    std::cout << "Player resigned\n";
     return;
   }
   if(true == connect_board.check_win(player1, player2)){
