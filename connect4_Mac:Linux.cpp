@@ -198,13 +198,13 @@ int main() {
     connect_4(2);
   }
   else if(3 == option){
-    central_menu(cursor);
+    cursor = central_menu(cursor);
     if(cursor == 1){
         game_state.new_match(player1, player2);
         connect_4(2);
     } else {
-        connect_board.deallocate();
-        return 0;
+      std::cout << "Quitting Connect 4. Thanks for Playing!\n";
+      return 0;
     }
   }
   else if(4 == option){

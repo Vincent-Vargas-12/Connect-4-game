@@ -117,7 +117,7 @@ void connect_4(int option){
           }
       }
     
-    system ("cls");
+    system ("cls"); //For windows, use " System ("cls") " in order for the terminal to properly clear
     connect_board.print_board();
   if(true == quit){
     std::cout << "Player resigned\n";
@@ -140,7 +140,7 @@ void connect_4(int option){
 }
 
 int central_menu(int cursor){
-    system("cls");
+    system("cls"); 
     int selection;
   std::cout << "XOXOXOXOXOXOXOOXOXO\n";
   std::cout << "O                 X\n";
@@ -198,18 +198,17 @@ int main() {
     connect_4(2);
   }
   else if(3 == option){
-    central_menu(cursor);
+    cursor = central_menu(cursor);
     if(cursor == 1){
         game_state.new_match(player1, player2);
         connect_4(2);
     } else {
-        connect_board.deallocate();
-        return 0;
+      std::cout << "Quitting Connect 4. Thanks for Playing!\n";
+      return 0;
     }
   }
   else if(4 == option){
     std::cout << "Quitting Connect 4. Thanks for Playing!\n";
-    connect_board.deallocate();
     return 0;
   }
   }
